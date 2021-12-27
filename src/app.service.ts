@@ -81,13 +81,13 @@ export class AppService {
   }
 
   async remountWDBlackDrive(): Promise<string> {
-    await exec('sudo umount /dev/sdb1')
+    return await exec('sudo umount /dev/sdb1')
       .then(async () => {
         await exec('sudo mount /dev/sdb1 /media/WD_BLACK');
+        return 'Success';
       })
       .catch((result) => {
         if (result.stderr.length > 0) return 'Failed unmounting drive';
       });
-    return 'Success';
   }
 }
