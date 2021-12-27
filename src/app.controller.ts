@@ -36,6 +36,12 @@ export class AppController {
     return res.status(HttpStatus.OK).json(result);
   }
 
+  @Get('remount_wd_drive')
+  async remountWDBlackDrive(@Res() res): Promise<string> {
+    const result = await this.appService.remountWDBlackDrive();
+    return res.status(HttpStatus.OK).json(result);
+  }
+
   @Post('create_service')
   async createService(
     @Res() res,

@@ -80,4 +80,10 @@ export class AppService {
         }
       });
   }
+
+  async remountWDBlackDrive(): Promise<string> {
+    await exec('sudo umount /dev/sdb1');
+    await exec('sudo mount /dev/sdb1 /media/WD_BLACK');
+    return 'Success';
+  }
 }
