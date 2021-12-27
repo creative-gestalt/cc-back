@@ -75,15 +75,19 @@ export class AppService {
         return 'Service Removed';
       })
       .catch((result) => {
-        if (result.stderr.length > 0) {
+        if (result.stderr.length > 0)
           return 'Failed stopping service, must not exist';
-        }
       });
   }
 
   async remountWDBlackDrive(): Promise<string> {
-    await exec('sudo umount /dev/sdb1');
-    await exec('sudo mount /dev/sdb1 /media/WD_BLACK');
+    await exec('sudo umount /dev/sdb1')
+      .then(async () => {
+        await exec('sudo mount /dev/sdb1 /media/WD_BLACK');
+      })
+      .catch((result) => {
+        if (result.stderr.length > 0) return 'Failed unmounting drive';
+      });
     return 'Success';
   }
 }
