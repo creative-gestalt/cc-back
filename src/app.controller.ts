@@ -18,6 +18,12 @@ export class AppController {
     return res.status(HttpStatus.OK).json(result);
   }
 
+  @Get('deploy_commandcenter')
+  async buildCommandCenter(@Res() res): Promise<string> {
+    const result = await this.appService.buildCommandCenter();
+    return res.status(HttpStatus.OK).json(result);
+  }
+
   @Get('deploy_dreamscape')
   async buildDreamscape(@Res() res): Promise<string> {
     const result = await this.appService.buildDreamscape();

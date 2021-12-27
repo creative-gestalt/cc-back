@@ -22,6 +22,11 @@ export class AppService {
     return 'Success';
   }
 
+  async buildCommandCenter(): Promise<string> {
+    await exec('sh ~/commandcenter_deploy.sh');
+    return 'Success';
+  }
+
   async buildDreamscape(): Promise<string> {
     await exec('sh ~/dreamscape_deploy.sh');
     return 'Success';
