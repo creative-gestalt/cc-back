@@ -86,8 +86,10 @@ export class AppService {
         await exec('sudo mount /dev/sdb1 /media/WD_BLACK');
         return 'Success';
       })
-      .catch((result) => {
-        if (result.stderr.length > 0) return 'Failed unmounting drive';
+      .catch(async (result) => {
+        await exec('sudo mount /dev/sdb1 /media/WD_BLACK').catch(() => {
+          if (result.stderr.length > 0) return 'Failed remounting drive';
+        });
       });
   }
 }
