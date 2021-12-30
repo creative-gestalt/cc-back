@@ -32,17 +32,17 @@ export class AppService {
       case 'stop-services':
         await exec('sh ~/deploy_dreamscape/stop_services.sh');
 
-        return 'stopped';
+        return 'services stopped';
       case 'build':
         await exec(
           'sh ~/deploy_dreamscape/build_front.sh && sh ~/deploy_dreamscape/build_back.sh',
         );
 
-        return 'build-complete';
+        return 'builds complete';
       case 'start-services':
         await exec('sh ~/dreamscape_deploy.sh');
 
-        return 'started';
+        return 'services started';
       default:
         return 'nothing';
     }
