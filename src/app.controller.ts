@@ -25,8 +25,11 @@ export class AppController {
   }
 
   @Post('deploy_dreamscape')
-  async buildDreamscape(@Res() res, @Body() body: string): Promise<string> {
-    const result = await this.appService.buildDreamscape(body);
+  async buildDreamscape(
+    @Res() res,
+    @Body() body: Record<string, string>,
+  ): Promise<string> {
+    const result = await this.appService.buildDreamscape(body.command);
     return res.status(HttpStatus.OK).json(result);
   }
 
