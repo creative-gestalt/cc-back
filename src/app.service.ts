@@ -27,9 +27,24 @@ export class AppService {
     return 'Success';
   }
 
-  async buildDreamscape(): Promise<string> {
-    await exec('sh ~/dreamscape_deploy.sh');
-    return 'Success';
+  async buildDreamscape(step: string): Promise<string> {
+    switch (step) {
+      case 'stop-services':
+        await exec('sh ~/deploy_dreamscape/stop_services.sh');
+
+        return 'stopped';
+      case 'build':
+        await exec(
+          'sh ~/deploy_dreamscape/build_front.sh && sh ~/deploy_dreamscape/build_back.sh',
+        );
+        return 'build-complete';
+      case 'start-services':
+        await exec('sh ~/dreamscape_deploy.sh');
+
+        return 'started';
+      default:
+        return 'nothing';
+    }
   }
 
   async buildBillTracker(): Promise<string> {
