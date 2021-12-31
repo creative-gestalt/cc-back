@@ -31,17 +31,15 @@ export class AppService {
     switch (step) {
       case 'stop-services':
         await exec('sh ~/deploy_dreamscape/stop_services.sh');
-
         return 'services stopped';
-      case 'build':
-        await exec(
-          'sh ~/deploy_dreamscape/build_front.sh && sh ~/deploy_dreamscape/build_back.sh',
-        );
-
-        return 'builds complete';
+      case 'build-front':
+        await exec('sh ~/deploy_dreamscape/build_front.sh');
+        return 'front build complete';
+      case 'build-back':
+        await exec('sh ~/deploy_dreamscape/build_back.sh');
+        return 'back build complete';
       case 'start-services':
         await exec('sh ~/dreamscape_deploy.sh');
-
         return 'services started';
       default:
         return 'nothing';
