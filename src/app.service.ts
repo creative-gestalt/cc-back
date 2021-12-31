@@ -39,7 +39,7 @@ export class AppService {
         await exec('sh ~/deploy_dreamscape/build_back.sh');
         return 'back build complete';
       case 'start-services':
-        await exec('sh ~/dreamscape_deploy.sh');
+        await exec('sh ~/deploy_dreamscape/start_services.sh');
         return 'services started';
       default:
         return 'nothing';
