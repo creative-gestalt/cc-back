@@ -72,6 +72,9 @@ export class AppService {
       `echo '${serviceText}' | sudo tee -a /usr/lib/systemd/system/${service.name}.service`,
     );
     await exec(`sudo systemctl enable ${service.name}.service`);
+    await exec(`git -C ~/${service.workdir}/ pull`);
+    await exec(`npm i --prefix=~/${service.workdir}/`);
+    await exec(`npm run build --prefix=~/${service.workdir}/`);
     await exec(`sudo service ${service.name} start`);
 
     return 'Service Created';
