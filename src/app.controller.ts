@@ -33,6 +33,15 @@ export class AppController {
     return res.status(HttpStatus.OK).json(result);
   }
 
+  @Post('deploy_dreamscape2')
+  async buildDreamscape2(
+    @Res() res,
+    @Body() body: Record<string, string>,
+  ): Promise<string> {
+    const result = await this.appService.buildDreamscape2(body.command);
+    return res.status(HttpStatus.OK).json(result);
+  }
+
   @Get('deploy_billtracker')
   async buildBillTracker(@Res() res): Promise<string> {
     const result = await this.appService.buildBillTracker();
