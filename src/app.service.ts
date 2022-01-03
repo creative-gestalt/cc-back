@@ -73,8 +73,8 @@ export class AppService {
     );
     await exec(`sudo systemctl enable ${service.name}.service`);
     await exec(`git -C ~/${service.workdir}/ pull`);
-    await exec(`/usr/bin/npm i --prefix=~/${service.workdir}/`);
-    await exec(`/usr/bin/npm run build --prefix=~/${service.workdir}/`);
+    await exec(`npm i --prefix=/home/nick/${service.workdir}/`);
+    await exec(`npm run build --prefix=/home/nick/${service.workdir}/`);
     await exec(`sudo service ${service.name} start`);
 
     return 'Service Created';
