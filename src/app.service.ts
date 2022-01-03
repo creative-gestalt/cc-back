@@ -84,8 +84,6 @@ export class AppService {
     return await exec(`sudo systemctl stop ${service.name}`)
       .then(async () => {
         await exec(`sudo systemctl disable ${service.name}`);
-        await exec(`sudo rm /etc/systemd/system/${service.name}`);
-        await exec(`sudo rm /lib/systemd/system/${service.name}`);
         await exec(`sudo rm /usr/lib/systemd/system/${service.name}`);
         await exec('sudo systemctl daemon-reload');
         await exec('sudo systemctl reset-failed');
