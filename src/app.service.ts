@@ -30,16 +30,16 @@ export class AppService {
   async buildDreamscape(step: string): Promise<string> {
     switch (step) {
       case 'stop-services':
-        await exec('sh ~/deploy_dreamscape/stop_services.sh');
+        await exec('sh ~/Deployment/dreamscape/stop_services.sh');
         return 'services stopped';
       case 'build-front':
-        await exec('sh ~/deploy_dreamscape/build_front.sh');
+        await exec('sh ~/Deployment/dreamscape/build_front.sh');
         return 'front build complete';
       case 'build-back':
-        await exec('sh ~/deploy_dreamscape/build_back.sh');
+        await exec('sh ~/Deployment/dreamscape/build_back.sh');
         return 'back build complete';
       case 'start-services':
-        await exec('sh ~/deploy_dreamscape/start_services.sh');
+        await exec('sh ~/Deployment/dreamscape/start_services.sh');
         return 'services started';
       default:
         return 'nothing';
