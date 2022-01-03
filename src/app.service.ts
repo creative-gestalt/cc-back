@@ -69,7 +69,7 @@ export class AppService {
     serviceText += '[Install]\n';
     serviceText += 'WantedBy=multi-user.target\n';
     await exec(
-      `sudo echo '${serviceText}' > /usr/lib/systemd/system/${service.name}.service`,
+      `echo '${serviceText}' | sudo tee -a /usr/lib/systemd/system/${service.name}.service`,
     );
     await exec(`sudo systemctl enable ${service.name}.service`);
     await exec(`sudo service ${service.name} start`);
