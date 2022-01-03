@@ -81,9 +81,9 @@ export class AppService {
   }
 
   async removeService(service: Record<string, string>): Promise<string> {
-    return await exec(`sudo systemctl stop ${service.name}`)
+    return await exec(`sudo systemctl stop ${service.name}.service`)
       .then(async () => {
-        await exec(`sudo systemctl disable ${service.name}`);
+        await exec(`sudo systemctl disable ${service.name}.service`);
         await exec(`sudo rm /usr/lib/systemd/system/${service.name}.service`);
         await exec('sudo systemctl daemon-reload');
         await exec('sudo systemctl reset-failed');
