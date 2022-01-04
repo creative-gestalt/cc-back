@@ -24,21 +24,15 @@ export class AppController {
     return res.status(HttpStatus.OK).json(result);
   }
 
-  @Post('deploy_dreamscape')
-  async buildDreamscape(
+  @Post('deploy_project')
+  async buildProject(
     @Res() res,
     @Body() body: Record<string, string>,
   ): Promise<string> {
-    const result = await this.appService.buildDreamscape(body.command);
-    return res.status(HttpStatus.OK).json(result);
-  }
-
-  @Post('deploy_dreamscape2')
-  async buildDreamscape2(
-    @Res() res,
-    @Body() body: Record<string, string>,
-  ): Promise<string> {
-    const result = await this.appService.buildDreamscape2(body.command);
+    const result = await this.appService.buildProject(
+      body.command,
+      body.projectName,
+    );
     return res.status(HttpStatus.OK).json(result);
   }
 

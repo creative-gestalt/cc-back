@@ -27,38 +27,19 @@ export class AppService {
     return 'Success';
   }
 
-  async buildDreamscape(step: string): Promise<string> {
+  async buildProject(step: string, projectName: string): Promise<string> {
     switch (step) {
       case 'stop-services':
-        await exec('sh ~/Deployment/dreamscape/stop_services.sh');
+        await exec(`sh ~/Deployment/${projectName}/stop_services.sh`);
         return 'services stopped';
       case 'build-front':
-        await exec('sh ~/Deployment/dreamscape/build_front.sh');
+        await exec(`sh ~/Deployment/${projectName}/build_front.sh`);
         return 'front build complete';
       case 'build-back':
-        await exec('sh ~/Deployment/dreamscape/build_back.sh');
+        await exec(`sh ~/Deployment/${projectName}/build_back.sh`);
         return 'back build complete';
       case 'start-services':
-        await exec('sh ~/Deployment/dreamscape/start_services.sh');
-        return 'services started';
-      default:
-        return 'nothing';
-    }
-  }
-
-  async buildDreamscape2(step: string): Promise<string> {
-    switch (step) {
-      case 'stop-services':
-        await exec('sh ~/Deployment/dreamscape-l/stop_services.sh');
-        return 'services stopped';
-      case 'build-front':
-        await exec('sh ~/Deployment/dreamscape-l/build_front.sh');
-        return 'front build complete';
-      case 'build-back':
-        await exec('sh ~/Deployment/dreamscape-l/build_back.sh');
-        return 'back build complete';
-      case 'start-services':
-        await exec('sh ~/Deployment/dreamscape-l/start_services.sh');
+        await exec(`sh ~/Deployment/${projectName}/start_services.sh`);
         return 'services started';
       default:
         return 'nothing';
@@ -92,8 +73,8 @@ export class AppService {
     );
     await exec(`sudo systemctl enable ${service.name}.service`);
     await exec(`git -C ~/${service.workdir}/ pull`);
-    // await exec(`npm i --prefix=/home/nick/${service.workdir}/`);
-    // await exec(`npm run build --prefix=/home/nick/${service.workdir}/`);
+    // await exec(`npm i --prefix=~/${service.workdir}/`);
+    // await exec(`npm run build --prefix=~/${service.workdir}/`);
     await exec(`sudo service ${service.name} start`);
 
     return 'Service Created';
