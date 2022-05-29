@@ -18,30 +18,12 @@ export class AppController {
     return res.status(HttpStatus.OK).json(result);
   }
 
-  @Get('deploy_commandcenter')
-  async buildCommandCenter(@Res() res): Promise<string> {
-    const result = await this.appService.buildCommandCenter();
-    return res.status(HttpStatus.OK).json(result);
-  }
-
   @Post('deploy_project')
   async buildProject(
     @Res() res,
     @Body() body: Record<string, string>,
   ): Promise<string> {
     const result = await this.appService.buildProject(body.projectName);
-    return res.status(HttpStatus.OK).json(result);
-  }
-
-  @Get('deploy_billtracker')
-  async buildBillTracker(@Res() res): Promise<string> {
-    const result = await this.appService.buildBillTracker();
-    return res.status(HttpStatus.OK).json(result);
-  }
-
-  @Get('remount_wd_drive')
-  async remountWDBlackDrive(@Res() res): Promise<string> {
-    const result = await this.appService.remountWDBlackDrive();
     return res.status(HttpStatus.OK).json(result);
   }
 

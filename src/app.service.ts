@@ -22,22 +22,12 @@ export class AppService {
     return 'Success';
   }
 
-  async buildCommandCenter(): Promise<string> {
-    await exec('sh ~/commandcenter_deploy.sh');
-    return 'Success';
-  }
-
   async buildProject(projectName: string): Promise<boolean> {
     await exec(
       `cd ~/Projects/${projectName} && docker compose down && docker compose build --force-rm && docker compose up -d`,
       { shell: '/bin/bash' },
     );
     return true;
-  }
-
-  async buildBillTracker(): Promise<string> {
-    await exec('sh ~/billtracker_deploy.sh');
-    return 'Success';
   }
 
   async createService(service: AddServiceDto): Promise<string> {
@@ -81,19 +71,6 @@ export class AppService {
       .catch((result) => {
         if (result.stderr.length > 0)
           return 'Failed stopping service, must not exist';
-      });
-  }
-
-  async remountWDBlackDrive(): Promise<string> {
-    return await exec('sudo umount /dev/sdb1')
-      .then(async () => {
-        await exec('sudo mount /dev/sdb1 /media/WD_BLACK');
-        return 'Success';
-      })
-      .catch(async (result) => {
-        await exec('sudo mount /dev/sdb1 /media/WD_BLACK').catch(() => {
-          if (result.stderr.length > 0) return 'Failed remounting drive';
-        });
       });
   }
 }
