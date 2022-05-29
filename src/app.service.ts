@@ -30,6 +30,7 @@ export class AppService {
   async buildProject(projectName: string): Promise<boolean> {
     await exec(
       `~/Projects/${projectName}/docker compose down && docker compose build --force-rm && docker compose up -d`,
+      { shell: '/bin/bash' },
     );
     return true;
   }
