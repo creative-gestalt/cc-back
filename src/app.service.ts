@@ -27,23 +27,11 @@ export class AppService {
     return 'Success';
   }
 
-  async buildProject(step: string, projectName: string): Promise<string> {
-    switch (step) {
-      case 'stop-services':
-        await exec(`sh ~/Deployment/${projectName}/stop_services.sh`);
-        return 'services stopped';
-      case 'build-front':
-        await exec(`sh ~/Deployment/${projectName}/build_front.sh`);
-        return 'front build complete';
-      case 'build-back':
-        await exec(`sh ~/Deployment/${projectName}/build_back.sh`);
-        return 'back build complete';
-      case 'start-services':
-        await exec(`sh ~/Deployment/${projectName}/start_services.sh`);
-        return 'services started';
-      default:
-        return 'nothing';
-    }
+  async buildProject(projectName: string): Promise<boolean> {
+    await exec(
+      `sh ~/Projects/${projectName}/docker compose down && docker compose build --force-rm && docker compose up -d`,
+    );
+    return true;
   }
 
   async buildBillTracker(): Promise<string> {

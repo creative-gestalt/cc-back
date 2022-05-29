@@ -29,10 +29,7 @@ export class AppController {
     @Res() res,
     @Body() body: Record<string, string>,
   ): Promise<string> {
-    const result = await this.appService.buildProject(
-      body.command,
-      body.projectName,
-    );
+    const result = await this.appService.buildProject(body.projectName);
     return res.status(HttpStatus.OK).json(result);
   }
 
