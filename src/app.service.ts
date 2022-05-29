@@ -29,7 +29,7 @@ export class AppService {
 
   async buildProject(projectName: string): Promise<boolean> {
     await exec(
-      `sh ~/Projects/${projectName}/docker compose down && docker compose build --force-rm && docker compose up -d`,
+      `~/Projects/${projectName}/docker compose down && docker compose build --force-rm && docker compose up -d`,
     );
     return true;
   }
