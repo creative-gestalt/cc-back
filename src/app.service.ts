@@ -23,11 +23,10 @@ export class AppService {
   }
 
   async buildProject(projectName: string): Promise<boolean> {
-    await exec(
-      `cd ~/Projects/${projectName} && git pull && docker compose build --force-rm && docker compose up -d`,
-      { shell: '/bin/bash' },
-    );
-    return true;
+    return exec(
+        `cd ~/Projects/${projectName} && git pull && docker compose build --force-rm && docker compose up -d`,
+        {shell: '/bin/bash'}
+    ).then(() => true).catch((error) => error);
   }
 
   async createService(service: AddServiceDto): Promise<string> {
