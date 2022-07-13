@@ -24,7 +24,7 @@ export class AppService {
 
   async buildProject(projectName: string): Promise<boolean> {
     return await exec(
-      `cd ~/Projects/${projectName} docker compose down && git pull && docker compose build --force-rm && docker compose up -d`,
+      `cd ~/Projects/${projectName} && docker compose down && git pull && docker compose build --force-rm && docker compose up -d && docker image prune -f`,
       { shell: '/bin/bash' },
     )
       .then(() => true)
