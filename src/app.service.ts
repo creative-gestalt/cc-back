@@ -24,13 +24,13 @@ export class AppService {
     return 'Success';
   }
 
-  async buildProject(projectName: string): Promise<boolean[]> {
-    this.eventService.getProgress('Docker Down');
+  async buildProject(projectName: string): Promise<void> {
+    this.eventService.getProgress('docker compose down');
     return await exec(`cd ~/Projects/${projectName} && docker compose down`, {
       shell: '/bin/bash',
     })
       .then(async () => {
-        this.eventService.getProgress('Docker Build');
+        this.eventService.getProgress('docker compose build --force-rm');
         await exec(
           `cd ~/Projects/${projectName} && docker compose build --force-rm`,
           {
@@ -38,12 +38,14 @@ export class AppService {
           },
         )
           .then(async () => {
-            this.eventService.getProgress('Docker Up');
+            this.eventService.getProgress('docker compose up -d');
             await exec(`cd ~/Projects/${projectName} && docker compose up -d`, {
               shell: '/bin/bash',
             })
               .then(async () => {
-                this.eventService.getProgress('Prune');
+                this.eventService.getProgress(
+                  'docker image prune -f && docker network prune -f',
+                );
                 await exec('docker image prune -f && docker network prune -f', {
                   shell: '/bin/bash',
                 })
