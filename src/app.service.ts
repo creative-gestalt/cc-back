@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-// import { exec } from 'child_process';
 import * as util from 'util';
 import { AddServiceDto } from './dto/service-file.dto';
+import { EventsGateway } from './events/events.gateway';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const exec = util.promisify(require('child_process').exec);
 
 @Injectable()
 export class AppService {
+  constructor(private eventService: EventsGateway) {}
+
   async getTemps(): Promise<string> {
     const { stdout } = await exec('sensors -j');
     const data = JSON.parse(stdout);
@@ -22,13 +24,60 @@ export class AppService {
     return 'Success';
   }
 
-  async buildProject(projectName: string): Promise<boolean> {
-    return await exec(
-      `cd ~/Projects/${projectName} && docker compose down && git pull && docker compose build --force-rm && docker compose up -d && docker image prune -f`,
-      { shell: '/bin/bash' },
-    )
-      .then(() => true)
-      .catch((error) => error);
+  async buildProject(projectName: string): Promise<boolean[]> {
+    this.eventService.getProgress('Changed Directory');
+    return await exec(`cd ~/Projects/${projectName}`, {
+      shell: '/bin/bash',
+    })
+      .then(async () => {
+        this.eventService.getProgress('Docker Down');
+        await exec('docker compose down', { shell: '/bin/bash' })
+          .then(async () => {
+            this.eventService.getProgress('Docker Build');
+            await exec('docker compose build --force-rm', {
+              shell: '/bin/bash',
+            })
+              .then(async () => {
+                this.eventService.getProgress('Docker Up');
+                await exec('docker compose up -d', { shell: '/bin/bash' })
+                  .then(async () => {
+                    this.eventService.getProgress('Prune');
+                    await exec(
+                      'docker image prune -f && docker network prune -f',
+                      {
+                        shell: '/bin/bash',
+                      },
+                    )
+                      .then(() => true)
+                      .catch((error) =>
+                        this.eventService.getProgress(
+                          `Error: ${error.cmd}; ${error.code}`,
+                        ),
+                      );
+                  })
+                  .catch((error) =>
+                    this.eventService.getProgress(
+                      `Error: ${error.cmd}; Code: ${error.code}`,
+                    ),
+                  );
+              })
+              .catch((error) =>
+                this.eventService.getProgress(
+                  `Error: ${error.cmd}; Code: ${error.code}`,
+                ),
+              );
+          })
+          .catch((error) =>
+            this.eventService.getProgress(
+              `Error: ${error.cmd}; Code: ${error.code}`,
+            ),
+          );
+      })
+      .catch((error) =>
+        this.eventService.getProgress(
+          `Error: ${error.cmd}; Code: ${error.code}`,
+        ),
+      );
   }
 
   async createService(service: AddServiceDto): Promise<string> {
